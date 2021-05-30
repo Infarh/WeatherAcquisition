@@ -6,4 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\WeatherAcquisition.WebAPIClients\WeatherAcquisition.WebAPIClients.csproj" />
+  </ItemGroup>
+
 </Project>
