@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,5 +33,17 @@ namespace WeatherAcquisition.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<DataSource>>> Get(int Skip, int Count) =>
             Ok(await _Repository.Get(Skip, Count));
+
+        [HttpGet("page/{PageIndex:int}/{PageSize:int}")]
+        [HttpGet("page[[{PageIndex:int}/{PageSize:int}]]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IPage<DataSource>>> GetPage(int PageIndex, int PageSize)
+        {
+            var result = await _Repository.GetPage(PageIndex, PageSize);
+            return result.Items.Any()
+                ? Ok(result)
+                : NotFound(result);
+        }
     }
 }
