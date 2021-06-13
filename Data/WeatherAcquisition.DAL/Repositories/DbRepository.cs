@@ -80,6 +80,9 @@ namespace WeatherAcquisition.DAL.Repositories
             if (total_count == 0)
                 return new Page(Enumerable.Empty<T>(), 0, PageIndex, PageSize);
 
+            if (query is not IOrderedQueryable<T>)
+                query = query.OrderBy(item => item.Id);
+
             if (PageIndex > 0)
                 query = query.Skip(PageIndex * PageSize);
             query = query.Take(PageSize);
