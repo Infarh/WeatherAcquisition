@@ -56,7 +56,12 @@ namespace WeatherAcquisition.DAL.Repositories
             if (Count <= 0) 
                 return Enumerable.Empty<T>();
 
-            var query = Items;
+            IQueryable<T> query = Items switch
+            {
+                IOrderedQueryable<T> ordered_query => ordered_query,
+                { } q => q.OrderBy(i => i.Id)
+            };
+
             if (Skip > 0)
                 query = query.Skip(Skip);
             return await query.Take(Count).ToArrayAsync(Cancel).ConfigureAwait(false);
