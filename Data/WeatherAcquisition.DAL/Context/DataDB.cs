@@ -21,6 +21,10 @@ namespace WeatherAcquisition.DAL.Context
                .OnDelete(DeleteBehavior.Cascade);
 
             //model.Entity<DataSource>()
+            //   .Property(source => source.Name)
+            //   .IsRequired();
+
+            //model.Entity<DataSource>()
             //   .HasIndex(source => source.Name)
             //   .IsUnique();
         }

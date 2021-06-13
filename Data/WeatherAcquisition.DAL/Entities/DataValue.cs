@@ -1,8 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using WeatherAcquisition.DAL.Entities.Base;
 
 namespace WeatherAcquisition.DAL.Entities
 {
+    [Index(nameof(Time))]
     public class DataValue : Entity
     {
         public DateTimeOffset Time { get; set; } = DateTimeOffset.Now;
