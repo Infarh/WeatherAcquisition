@@ -18,6 +18,8 @@ namespace WeatherAcquisition.DAL.Repositories
 
         protected virtual IQueryable<T> Items => Set;
 
+        public bool AutoSaveChanges { get; set; }
+
         public DbRepository(DataDB db)
         {
             _db = db;
@@ -110,7 +112,10 @@ namespace WeatherAcquisition.DAL.Repositories
             //_db.Entry(item).State = EntityState.Added;
             //Set.Add(item);
             await _db.AddAsync(item, Cancel).ConfigureAwait(false);
-            await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+
+            if (AutoSaveChanges)
+                await SaveChanges(Cancel).ConfigureAwait(false);
+
             return item;
         }
 
@@ -121,7 +126,10 @@ namespace WeatherAcquisition.DAL.Repositories
             //_db.Entry(item).State = EntityState.Modified;
             //Set.Update(item);
             _db.Update(item);
-            await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+
+            if (AutoSaveChanges)
+                await SaveChanges(Cancel).ConfigureAwait(false);
+
             return item;
         }
 
@@ -135,7 +143,10 @@ namespace WeatherAcquisition.DAL.Repositories
             //_db.Entry(item).State = EntityState.Deleted;
             //Set.Remove(item);
             _db.Remove(item);
-            await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+
+            if (AutoSaveChanges)
+                await SaveChanges(Cancel).ConfigureAwait(false);
+
             return item;
         }
 
@@ -153,5 +164,9 @@ namespace WeatherAcquisition.DAL.Repositories
             return await Delete(item, Cancel).ConfigureAwait(false);
         }
 
+        public async Task<int> SaveChanges(CancellationToken Cancel = default)
+        {
+            return await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+        }
     }
 }
