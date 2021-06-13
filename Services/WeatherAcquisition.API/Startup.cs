@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using WeatherAcquisition.API.Data;
 using WeatherAcquisition.DAL.Context;
 
 namespace WeatherAcquisition.API
@@ -18,6 +19,7 @@ namespace WeatherAcquisition.API
                    .UseSqlServer(
                         Сonfiguration.GetConnectionString("Data"),
                         o => o.MigrationsAssembly("WeatherAcquisition.DAL.SqlServer")));
+            services.AddTransient<DataDBInitializer>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -26,8 +28,10 @@ namespace WeatherAcquisition.API
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataDBInitializer db)
         {
+            db.Initialize();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
