@@ -47,7 +47,7 @@ namespace WeatherAcquisition.WebAPIClients.Repositories
                     Items = Enumerable.Empty<T>(),
                     TotalCount = 0,
                     PageIndex = PageIndex,
-                    PageSize = PageSize
+                    PageSize = PageSize,
                 };
             return await response
                .EnsureSuccessStatusCode()
@@ -58,10 +58,10 @@ namespace WeatherAcquisition.WebAPIClients.Repositories
 
         private class PageItems : IPage<T>
         {
-            public IEnumerable<T> Items { get; init; }
-            public int TotalCount { get; init; }
-            public int PageIndex { get; init; }
-            public int PageSize { get; init; }
+            public IEnumerable<T> Items { get; set; }
+            public int TotalCount { get; set; }
+            public int PageIndex { get; set; }
+            public int PageSize { get; set; }
             public int TotalPagesCount => (int)Math.Ceiling((double)TotalCount / PageSize);
         }
 
