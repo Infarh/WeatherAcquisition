@@ -3,6 +3,9 @@ using System.Linq;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WeatherAcquisition.DAL.Entities;
+using WeatherAcquisition.Interfaces.Base.Repositories;
+using WeatherAcquisition.WebAPIClients.Repositories;
 using WeatherAcquisition.WPF.ViewModels;
 
 namespace WeatherAcquisition.WPF
@@ -27,6 +30,12 @@ namespace WeatherAcquisition.WPF
         private static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddScoped<MainWindowViewModel>();
+
+            services.AddHttpClient<IRepository<DataSource>, WebRepository<DataSource>>(
+                client =>
+                {
+                    client.BaseAddress = new Uri($"{host.Configuration["WebAPI"]}/api/DataSources/"); // "/" в конце адреса обязательна!
+                });
         }
 
         protected override async void OnStartup(StartupEventArgs e)

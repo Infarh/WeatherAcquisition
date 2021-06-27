@@ -7,7 +7,31 @@
         DataContext="{Binding MainModel, Source={StaticResource Locator}}"
         Title="MainWindow"
         Width="800" Height="450">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Данные">
+                <MenuItem Header="Загрузить источники" Command="{Binding LoadDataSourcesCommand}"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox ItemsSource="{Binding DataSources}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock>
+                                <TextBlock Text="{Binding Id}"/>:
+                                <TextBlock Text="{Binding Name}"/>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Description}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <GridSplitter Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="3" Background="Transparent"/>
+        </Grid>
+    </DockPanel>
 </Window>
