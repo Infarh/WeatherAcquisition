@@ -27,7 +27,6 @@ namespace WeatherAcquisition.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(bool))]
         public async Task<IActionResult> ExistId(int id) => await _Repository.ExistId(id) ? Ok(true) : NotFound(false);
 
-        [HttpGet("exist")]
         [HttpPost("exist")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(bool))]
@@ -55,9 +54,10 @@ namespace WeatherAcquisition.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [ActionName("Get")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id) =>
+        public async Task<IActionResult> Get(int id) =>
             await _Repository.GetById(id) is { } item
                 ? Ok(item)
                 : NotFound();
@@ -67,7 +67,7 @@ namespace WeatherAcquisition.API.Controllers
         public async Task<IActionResult> Add(DataSource item)
         {
             var result = await _Repository.Add(item);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id });
+            return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
         [HttpPut]
@@ -77,7 +77,7 @@ namespace WeatherAcquisition.API.Controllers
         {
             if (await _Repository.Update(item) is not { } result)
                 return NotFound(item);
-            return AcceptedAtAction(nameof(GetById), new { id = result.Id });
+            return AcceptedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
         [HttpDelete]
