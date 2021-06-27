@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -61,6 +62,7 @@ namespace WeatherAcquisition.WebAPIClients.Repositories
             public int TotalCount { get; init; }
             public int PageIndex { get; init; }
             public int PageSize { get; init; }
+            public int TotalPagesCount => (int)Math.Ceiling((double)TotalCount / PageSize);
         }
 
         public async Task<T> GetById(int Id, CancellationToken Cancel = default) =>
