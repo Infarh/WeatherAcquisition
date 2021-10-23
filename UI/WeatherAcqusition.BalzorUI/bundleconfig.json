@@ -1,0 +1,8 @@
+[
+  {
+    "inputFiles": [
+      "Styles/blazor-site.css"
+    ],
+    "outputFileName": "wwwroot/css/blazor-site.css"
+  }
+]
