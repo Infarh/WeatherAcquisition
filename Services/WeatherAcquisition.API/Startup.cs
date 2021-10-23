@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WeatherAcquisition.API.Data;
 using WeatherAcquisition.DAL.Context;
-using WeatherAcquisition.DAL.Entities;
 using WeatherAcquisition.DAL.Repositories;
 using WeatherAcquisition.Interfaces.Base.Repositories;
 
@@ -24,8 +23,6 @@ namespace WeatherAcquisition.API
                         o => o.MigrationsAssembly("WeatherAcquisition.DAL.SqlServer")));
             services.AddTransient<DataDBInitializer>();
 
-            //services.AddScoped<IRepository<DataSource>, DbRepository<DataSource>>();
-            //services.AddScoped<IRepository<DataValue>, DbRepository<DataValue>>();
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
             services.AddScoped(typeof(INamedRepository<>), typeof(DbNamedRepository<>));
 
@@ -43,11 +40,15 @@ namespace WeatherAcquisition.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WeatherAcquisition.API v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+
+            app.UseBlazorFrameworkFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -56,6 +57,7 @@ namespace WeatherAcquisition.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }

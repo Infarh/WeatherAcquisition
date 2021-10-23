@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherAcquisition.ConsoleU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherAcquisition.WPF", "UI\WeatherAcquisition.WPF\WeatherAcquisition.WPF.csproj", "{B310B398-4DB6-4C23-9573-7998E6569BEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherAcqusition.BalzorUI", "UI\WeatherAcqusition.BalzorUI\WeatherAcqusition.BalzorUI.csproj", "{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +163,18 @@ Global
 		{B310B398-4DB6-4C23-9573-7998E6569BEE}.Release|x64.Build.0 = Release|Any CPU
 		{B310B398-4DB6-4C23-9573-7998E6569BEE}.Release|x86.ActiveCfg = Release|Any CPU
 		{B310B398-4DB6-4C23-9573-7998E6569BEE}.Release|x86.Build.0 = Release|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Debug|x64.Build.0 = Debug|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Debug|x86.Build.0 = Debug|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Release|x64.ActiveCfg = Release|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Release|x64.Build.0 = Release|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Release|x86.ActiveCfg = Release|Any CPU
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +190,7 @@ Global
 		{CF6BCD9F-8106-4086-A5E6-0E2EBD885BFB} = {F616C123-8475-49E3-8841-E4BE7226FF2A}
 		{855D7078-38EB-4E50-8E36-30B9E3320391} = {ED4434E5-6CCE-4995-8AD7-EE8E85EC7029}
 		{B310B398-4DB6-4C23-9573-7998E6569BEE} = {ED4434E5-6CCE-4995-8AD7-EE8E85EC7029}
+		{CE1F061C-83A1-4E47-9FDA-AAE56D870D1F} = {ED4434E5-6CCE-4995-8AD7-EE8E85EC7029}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AF8B5411-099E-4F6E-8329-DC502786275A}
