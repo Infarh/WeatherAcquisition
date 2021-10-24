@@ -1,0 +1,91 @@
+﻿@page "/"
+@using WeatherAcquisition.Interfaces.Base.Repositories
+@using WeatherAcquisition.Domain.Base
+@inject IRepository<DataSourceInfo> _Repository
+
+<h3>Данные</h3>
+
+<button class="btn btn-primary" @onclick="RefreshButton_OnClick">Перезагрузить</button>
+@*<button class="btn btn-primary" @onclick="async () => await UpdateSources()">Перезагрузить</button>*@
+
+<hr/>
+
+<EditForm Model="_CreateNewSourceModel" OnValidSubmit="OnSourceCreated">
+    <div class="row">
+        <div class="col-3">
+            <InputText id="new-datasource-name" @bind-Value="_CreateNewSourceModel.Name"/>
+        </div>
+        <div class="col-9">
+            <InputText id="new-datasource-description" @bind-Value="_CreateNewSourceModel.Description"/>
+        </div>
+    </div>
+    <button class="btn btn-outline-primary" type="submit">Создать</button>
+</EditForm>
+
+@if (_Sources is { } sources)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var src in sources)
+            {
+                <tr>
+                    <td>@src.Id</td>
+                    <td>@src.Name</td>
+                    <td>@src.Description</td>
+                    <td>
+                        <button class="btn btn-outline-danger" @onclick="() => Remove(src)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Загрузка данных...</p>
+}
+
+@code{
+
+    private DataSourceInfo _CreateNewSourceModel = new();
+
+    private IList<DataSourceInfo> _Sources;
+
+    private async Task UpdateSources()
+    {
+        Console.WriteLine("Запрос данных с сервера");
+        _Sources = (await _Repository.GetAll()).ToList();
+        Console.WriteLine("Запрос данных завершён");
+    }
+
+    protected override async Task OnInitializedAsync() => await UpdateSources();
+
+    private async Task RefreshButton_OnClick() => await UpdateSources();
+
+    private async Task Remove(DataSourceInfo Source)
+    {
+        if (_Sources is not { Count: > 0 }) return;
+
+        var removed = await _Repository.Delete(Source);
+        if (removed is not null)
+            _Sources.Remove(removed);
+    }
+
+    private async Task OnSourceCreated()
+    {
+        var created_source = await _Repository.Add(_CreateNewSourceModel);
+        if(created_source is null) return;
+        _Sources.Add(created_source);
+        _CreateNewSourceModel = new();
+    }
+}

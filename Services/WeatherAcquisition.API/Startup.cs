@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WeatherAcquisition.API.Data;
 using WeatherAcquisition.DAL.Context;
-using WeatherAcquisition.DAL.Entities;
 using WeatherAcquisition.DAL.Repositories;
 using WeatherAcquisition.Interfaces.Base.Repositories;
 
@@ -34,6 +33,8 @@ namespace WeatherAcquisition.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherAcquisition.API", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataDBInitializer db)
@@ -43,9 +44,13 @@ namespace WeatherAcquisition.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WeatherAcquisition.API v1"));
             }
+
+            app.UseBlazorFrameworkFiles();
+            app.UseStaticFiles();
 
             //app.UseHttpsRedirection();
 
@@ -56,6 +61,7 @@ namespace WeatherAcquisition.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }
