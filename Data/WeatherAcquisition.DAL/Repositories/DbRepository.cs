@@ -18,7 +18,7 @@ namespace WeatherAcquisition.DAL.Repositories
 
         protected virtual IQueryable<T> Items => Set;
 
-        public bool AutoSaveChanges { get; set; }
+        public bool AutoSaveChanges { get; set; } = true;
 
         public DbRepository(DataDB db)
         {
@@ -69,7 +69,10 @@ namespace WeatherAcquisition.DAL.Repositories
             return await query.Take(Count).ToArrayAsync(Cancel).ConfigureAwait(false);
         }
 
-        protected record Page(IEnumerable<T> Items, int TotalCount, int PageIndex, int PageSize) : IPage<T>;
+        protected record Page(IEnumerable<T> Items, int TotalCount, int PageIndex, int PageSize) : IPage<T>
+        {
+            public int TotalPagesCount => (int)Math.Ceiling((double)TotalCount / PageSize);
+        }
         public async Task<IPage<T>> GetPage(int PageIndex, int PageSize, CancellationToken Cancel = default)
         {
             if (PageSize <= 0) return new Page(Enumerable.Empty<T>(), PageSize, PageIndex, PageSize);
@@ -79,6 +82,9 @@ namespace WeatherAcquisition.DAL.Repositories
             var total_count = await query.CountAsync(Cancel).ConfigureAwait(false);
             if (total_count == 0)
                 return new Page(Enumerable.Empty<T>(), 0, PageIndex, PageSize);
+
+            if (query is not IOrderedQueryable<T>)
+                query = query.OrderBy(item => item.Id);
 
             if (PageIndex > 0)
                 query = query.Skip(PageIndex * PageSize);
