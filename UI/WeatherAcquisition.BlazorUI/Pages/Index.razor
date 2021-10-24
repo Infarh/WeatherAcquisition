@@ -16,6 +16,7 @@
                 <th>id</th>
                 <th>Название</th>
                 <th>Описание</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,11 @@
                     <td>@src.Id</td>
                     <td>@src.Name</td>
                     <td>@src.Description</td>
+                    <td>
+                        <button class="btn btn-outline-danger" @onclick="() => Remove(src)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -49,4 +55,11 @@ else
     protected override async Task OnInitializedAsync() => await UpdateSources();
 
     private async Task RefreshButton_OnClick() => await UpdateSources();
+
+    private void Remove(DataSourceInfo Source)
+    {
+        if(_Sources is not { Count: > 0 }) return;
+
+        _Sources.Remove(Source);
+    }
 }
