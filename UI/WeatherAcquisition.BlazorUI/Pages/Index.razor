@@ -3,6 +3,11 @@
 @using WeatherAcquisition.Domain.Base
 @inject IRepository<DataSourceInfo> _Repository
 
+<h3>Данные</h3>
+
+<button class="btn btn-primary" @onclick="RefreshButton_OnClick">Перезагрузить</button>
+@*<button class="btn btn-primary" @onclick="async () => await UpdateSources()">Перезагрузить</button>*@
+
 @if (_Sources is { } sources)
 {
     <table class="table">
@@ -34,8 +39,14 @@ else
 
     private IList<DataSourceInfo> _Sources;
 
-    protected override async Task OnInitializedAsync()
+    private async Task UpdateSources()
     {
+        Console.WriteLine("Запрос данных с сервера");
         _Sources = (await _Repository.GetAll()).ToList();
+        Console.WriteLine("Запрос данных завершён");
     }
+
+    protected override async Task OnInitializedAsync() => await UpdateSources();
+
+    private async Task RefreshButton_OnClick() => await UpdateSources();
 }
