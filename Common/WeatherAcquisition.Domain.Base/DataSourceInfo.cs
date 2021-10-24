@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using WeatherAcquisition.Interfaces.Base.Entities;
 
 namespace WeatherAcquisition.Domain.Base
@@ -6,6 +7,7 @@ namespace WeatherAcquisition.Domain.Base
     public class DataSourceInfo : INamedEntity, IEquatable<DataSourceInfo>
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
 
