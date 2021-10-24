@@ -1,3 +1,67 @@
 ﻿@page "/"
 
-Welcome
+@using WeatherAcquisition.Interfaces.Base.Repositories
+@using WeatherAcquisition.Domain.Base
+@inject IRepository<DataSourceInfo> SourcesRepository
+
+
+<h3>Источники</h3>
+
+<button class="btn btn-primary" @onclick="Refresh">Обновить</button>
+
+<EditForm Model="_CreateNewSourceModel" OnValidSubmit="OnSourceCreated">
+    <div class="row">
+        <div class="col-3">
+            <InputText id="new-datasource-name" @bind-Value="_CreateNewSourceModel.Name"></InputText>
+        </div>
+        <div class="col-9">
+            <InputText id="new-datasource-description" @bind-Value="_CreateNewSourceModel.Description"></InputText>
+        </div>
+    </div>
+    <button class="btn btn-outline-primary" type="submit">Создать</button>
+</EditForm>
+
+@if (_Sources is { } sources)
+{
+    <ul class="pt-3">
+        @foreach (var source in sources)
+        {
+            <li>
+                <button class="btn btn-sm btn-outline-warning" @onclick="() => RemoveSource(source)">
+                    <i class="fa fa-times"></i>
+                </button>
+                @source.Id : @source.Name : @source.Description
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code
+{
+    private DataSourceInfo _CreateNewSourceModel = new();
+
+    private IList<DataSourceInfo> _Sources;
+
+    private async Task Refresh() => _Sources = (await SourcesRepository.GetAll()).ToList();
+
+    protected override async Task OnInitializedAsync() => await Refresh();
+
+    private async Task RemoveSource(DataSourceInfo Source)
+    {
+        var removed = await SourcesRepository.Delete(Source);
+        if (removed != null)
+            _Sources.Remove(Source);
+    }
+
+    private async Task OnSourceCreated()
+    {
+        var created_source = await SourcesRepository.Add(_CreateNewSourceModel);
+        if (created_source is null) return;
+        _Sources.Add(created_source);
+        _CreateNewSourceModel = new();
+    }
+}
